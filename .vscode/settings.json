@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/d99a23ae-fbad-4a6c-9621-3423943ce1b2/microsoft.web/sites/subscriptions/d99a23ae-fbad-4a6c-9621-3423943ce1b2/resourceGroups/py-fish/providers/Microsoft.Web/sites/pyfish-api",
+    "appService.deploySubpath": "."
+}
