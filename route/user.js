@@ -22,7 +22,7 @@ route.get('/',(req,res)=>{
 route.get('/:mac', async (req,res)=>{
     const mac = req.params.mac
     try{
-        conn.query('SELECT * from user_data WHERE id = ? ',[mac]
+        conn.query('SELECT * from user_data WHERE user_mac = ? ',[mac]
         , (err,result,field)=>{
             if(err){
                 console.log(err)
