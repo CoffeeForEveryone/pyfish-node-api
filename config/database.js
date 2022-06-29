@@ -4,9 +4,9 @@ const moment = require('moment');
 moment.locale('th');
 
 const conn = mysql.createConnection({
-    host:"kmg.mysql.database.azure.com",
-    user:"km_admin",
-    password:"Iamstrongpassword2499",
+    host:"localhost",
+    user:"root",
+    password:"km_admin",
     database:"km_database"
 })
 
