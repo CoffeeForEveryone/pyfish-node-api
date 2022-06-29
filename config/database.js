@@ -4,10 +4,10 @@ const moment = require('moment');
 moment.locale('th');
 
 const conn = mysql.createConnection({
-    host:process.env.HOST,
-    user:process.env.USER,
-    password:process.env.PASSWORD,
-    database:process.env.DATABASE
+    host:"localhost",
+    user:"km_admin",
+    password:"Iamstrongpassword2499",
+    database:"km_database"
 })
 
 
