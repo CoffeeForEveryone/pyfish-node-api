@@ -41,6 +41,7 @@ route.post('/web/',(req,res)=>{
     const {username,password} = req.body
     try{
         if((username == "km_dev") && (password == "Iamstrongpassword2499") ){
+            console.log(username,password)
             const token = jwt.sign(
                 {username :username},
                 "km_dev",
@@ -57,7 +58,7 @@ route.post('/web/',(req,res)=>{
     }
 })
 
-route.get('/web/auth',auth,(req,res)=>{
+route.get('/web/auth',(req,res)=>{
     try{
         res.status(200).json({"status":true})
     }catch{
