@@ -3,6 +3,7 @@ const route = express.Router()
 const conn = require('../config/database')
 const moment = require('moment')
 const jwt = require('jsonwebtoken')
+const auth = require('../middleware/auth')
 
 route.post('/',(req,res)=>{
     const {mac,function_id} = req.body
@@ -33,6 +34,35 @@ route.post('/',(req,res)=>{
         })
     }catch{
         console.log(err)
+    }
+})
+
+route.post('/web/',(req,res)=>{
+    const {username,password} = req.body
+    try{
+        if((username == process.env.web_user) && (password == process.env.web_password) ){
+            const token = jwt.sign(
+                {username :username},
+                process.env.secret,
+                {
+                    expiresIn:"1h"
+                }
+            )
+            res.status(200).json({"token":token})
+        }else{
+            res.status(400).json({"msg":"Username or password incorrect"})
+        }
+    }catch{
+        res.status(400).json({"msg":"Something went wrong"})
+        console.log('Err something wentwrong')
+    }
+})
+
+route.get('/web/auth',auth,(req,res)=>{
+    try{
+        res.status(200).json({"status":true})
+    }catch{
+        res.status(400).json({"msg":"Something went wrong"})
     }
 })
 
