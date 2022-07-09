@@ -54,7 +54,7 @@ route.post('/web/',(req,res)=>{
         }
     }catch{
         res.status(400).json({"msg":"Something went wrong"})
-        console.log('Err something wentwrong')
+        console.log(err)
     }
 })
 
