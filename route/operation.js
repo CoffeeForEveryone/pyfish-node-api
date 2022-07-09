@@ -51,6 +51,7 @@ route.post('/web/',(req,res)=>{
             )
             res.status(200).json({"token":token})
         }else{
+            console.log(username,password)
             res.status(400).json({"msg":"Username or password incorrect"})
         }
     }catch{
