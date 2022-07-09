@@ -40,10 +40,10 @@ route.post('/',(req,res)=>{
 route.post('/web/',(req,res)=>{
     const {username,password} = req.body
     try{
-        if((username == process.env.web_user) && (password == process.env.web_password) ){
+        if((username == "km_dev") && (password == "Iamstrongpassword2499") ){
             const token = jwt.sign(
                 {username :username},
-                process.env.secret,
+                "km_dev",
                 {
                     expiresIn:"1h"
                 }
@@ -53,7 +53,7 @@ route.post('/web/',(req,res)=>{
             res.status(400).json({"msg":"Username or password incorrect"})
         }
     }catch{
-        res.status(400).json({"msg":err})
+        res.status(400).json({"msg":"err"})
     }
 })
 
