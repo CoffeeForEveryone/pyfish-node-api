@@ -53,8 +53,7 @@ route.post('/web/',(req,res)=>{
             res.status(400).json({"msg":"Username or password incorrect"})
         }
     }catch{
-        res.status(400).json({"msg":"Something went wrong"})
-        console.log(err)
+        res.status(400).json({"msg":err})
     }
 })
 
