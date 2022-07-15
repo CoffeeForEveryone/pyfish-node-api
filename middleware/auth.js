@@ -14,7 +14,7 @@ const verifyToken = (req,res,next)=>{
     }
 
     try{
-        jwt.verify(token,process.env.secret)
+        jwt.verify(token,"km_dev")
     }catch{
         res.status(401).send("token")
         return
