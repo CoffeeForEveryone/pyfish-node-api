@@ -14,20 +14,31 @@ route.post('/',(req,res)=>{
                 return
             }
             if(user_data.length == 0){
+                console.log(mac)
                 res.status(400).json({"msg":"Mac not found","can_access":false})
                 return
             }
+            console.log(mac)
             conn.query('SELECT * FROM rent_data WHERE (user_mac = ? && function_id = ?) && rent_status = ?',[mac,function_id,1],(err,result,field)=>{
                 if(result.length==0){
                     res.status(400).json({"msg":"ไม่มีสิทธิ์ใช้งานฟังก์ชั่นนี้","can_access":false})
+                    return
                 }
                 let privilage = moment().isBefore(result[0].rent_end)
                 let status = moment(result[0].rent_end).fromNow()
                 let rent_end = moment(result[0].rent_end).add(543,'year').format('LLL')
+                const token = jwt.sign(
+                    {mac :mac},
+                    "km_dev",
+                    {
+                        expiresIn:"24h"
+                    }
+                )
                 res.json({
                     "can_access":privilage,
                     "time_from_now":status,
-                    "time_end":rent_end
+                    "time_end":rent_end,
+                    "token":token,
                 })
 
             })
@@ -46,12 +57,12 @@ route.post('/web/',(req,res)=>{
                 {username :username},
                 "km_dev",
                 {
-                    expiresIn:"1h"
+                    expiresIn:"24h"
                 }
             )
             res.status(200).json({"token":token})
+            console.log(token)
         }else{
-            console.log(username,password)
             res.status(400).json({"msg":"Username or password incorrect"})
         }
     }catch{
@@ -59,7 +70,7 @@ route.post('/web/',(req,res)=>{
     }
 })
 
-route.get('/web/auth',(req,res)=>{
+route.get('/web/auth',auth,(req,res)=>{
     try{
         res.status(200).json({"status":true})
     }catch{
@@ -67,4 +78,26 @@ route.get('/web/auth',(req,res)=>{
     }
 })
 
+route.get('/dashboard',auth,(req,res)=>{
+    try{
+        const sql = `SELECT 
+        (SELECT count(user_mac) FROM user_data) as user_count, 
+        (SELECT count(function_id) FROM function_data) as program_count,
+        (SELECT count(rent_id) from rent_data WHERE rent_status = '1') as rent_open,
+        (SELECT count(rent_id) from rent_data ) as rent_all,
+        (SELECT count(rent_id) from rent_data WHERE DATE(rent_start) = CURDATE()) as rent_today,
+        (SELECT sum(rent_price) FROM rent_data WHERE DATE(rent_start) = CURDATE()) as rent_price_today,
+        (SELECT (SUM(rent_price) / SUM(TIMESTAMPDIFF(day,rent_start,rent_end))) / 24 as time_remain from rent_data WHERE DATE(rent_start) = CURDATE()) as price_per_hours ,
+        (SELECT SUM(rent_price) FROM rent_data) as price_all`
+        conn.query(sql,(err,result,field)=>{
+            if(err){
+                console.log(err)
+                return
+            }
+            res.json(result)
+        })
+    }catch(err){
+        console.log(err)
+    }
+})
 module.exports = route

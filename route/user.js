@@ -90,6 +90,7 @@ route.put('/ban/:mac',(req,res)=>{
 route.put('/checkin/:mac',(req,res)=>{
     const mac = req.params.mac
     const time = moment().format('YYYY-MM-DD HH:mm:ss')
+    console.log('ok')
     try{
         conn.query('UPDATE user_data SET user_last_login = ? WHERE user_mac = ?',[time,mac],(err,result,field)=>{
             if(err){
@@ -99,6 +100,7 @@ route.put('/checkin/:mac',(req,res)=>{
             res.status(200).json({"msg":"Checkin Successfully","status":"true"})
         })
     }catch{
+        res.status(400).json({"msg":"Something wrong"})
         console.log(err)
     }
 })
