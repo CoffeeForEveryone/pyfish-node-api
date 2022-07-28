@@ -101,7 +101,7 @@ route.get('/dashboard',auth,(req,res)=>{
     }
 })
 
-route.get('/update_expire',(req,res)=>{
+route.get('/update_expire',auth,(req,res)=>{
     try{
         const sql = "SELECT rent_id FROM rent_data WHERE DATE(NOW()) > rent_end AND rent_status = 1"
         conn.query(sql,(err,result,field)=>{
@@ -120,17 +120,5 @@ route.get('/update_expire',(req,res)=>{
     }
 })
 
-route.get('/update_expire_test',(req,res)=>{
-    try{
-        const sql = "SELECT rent_id FROM rent_data WHERE DATE(NOW()) > rent_end AND rent_status = 1"
-        conn.query(sql,(err,result,field)=>{
-            res.json(result)
-            for(var attributename in result){
-                console.log(attributename+": "+result[attributename].rent_id);
-            }
-        })
-    }catch(err){
-        console.log(err)
-    }
-})
+
 module.exports = route
