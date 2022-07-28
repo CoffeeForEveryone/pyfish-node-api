@@ -12,7 +12,6 @@ const verifyToken = (req,res,next)=>{
         res.status(403).send('Token failed')
         return
     }
-
     try{
         jwt.verify(token,"km_dev")
     }catch{
