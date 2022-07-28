@@ -100,4 +100,37 @@ route.get('/dashboard',auth,(req,res)=>{
         console.log(err)
     }
 })
+
+route.get('/update_expire',(req,res)=>{
+    try{
+        const sql = "SELECT rent_id FROM rent_data WHERE DATE(NOW()) > rent_end AND rent_status = 1"
+        conn.query(sql,(err,result,field)=>{
+
+            for(var attributename in result){
+                    const sql_update = "UPDATE rent_data SET rent_status = 0 WHERE rent_id = ?"
+                    conn.query(sql_update,[result[attributename].rent_id],(err,result2,field)=>{
+
+                    })
+                    console.log(result[attributename].rent_id)
+            }
+            res.status(200).json({"msg":"Success"})
+        })
+    }catch(err){
+        console.log(err)
+    }
+})
+
+route.get('/update_expire_test',(req,res)=>{
+    try{
+        const sql = "SELECT rent_id FROM rent_data WHERE DATE(NOW()) > rent_end AND rent_status = 1"
+        conn.query(sql,(err,result,field)=>{
+            res.json(result)
+            for(var attributename in result){
+                console.log(attributename+": "+result[attributename].rent_id);
+            }
+        })
+    }catch(err){
+        console.log(err)
+    }
+})
 module.exports = route
