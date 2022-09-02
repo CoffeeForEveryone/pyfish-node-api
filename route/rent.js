@@ -1,7 +1,8 @@
 const express = require('express')
 const route = express.Router()
 const conn = require('../config/database')
-const moment = require('moment')
+var moment = require('moment-timezone');
+moment().tz("Asia/Bangkok").format();
 
 route.get('/',(req,res)=>{
     try{

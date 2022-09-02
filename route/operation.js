@@ -50,11 +50,11 @@ route.post('/',(req,res)=>{
                     }
                     let privilage = moment().isBefore(result[0].rent_end)
                     let status = moment(result[0].rent_end).fromNow()
-                    let rent_end = moment(result[0].rent_end).add(543,'year').format('D MMMM YYYY HH:mm:ss ')
+                    let rent_endd = moment(result[0].rent_end).add(543,'year').format('D MMMM YYYY HH:mm:ss ')
                     res.json({
                         "can_access":privilage,
                         "time_from_now":status,
-                        "time_end":rent_end,
+                        "time_end":rent_endd,
                     })
     
                 })
