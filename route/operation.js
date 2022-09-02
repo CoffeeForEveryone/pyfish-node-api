@@ -10,6 +10,7 @@ route.post('/',(req,res)=>{
     const {mac,function_id,user_token} = req.body
     const hash = md5(mac+'FishStop')
     const time = moment().format('YYYY-MM-DD HH:mm:ss')
+    const now = moment().format('YYYY-MM-DD HH:mm:ss')
     try{
         conn.query('SELECT * FROM user_data WHERE user_mac = ?',[mac],(err,user_data,field)=>{
             if(err){
@@ -22,10 +23,10 @@ route.post('/',(req,res)=>{
                 return
             }
 
-            if(user_token != hash){
-                res.status(400).json({"msg":"token incorrect","can_access":false})
-                return
-            }
+            // if(user_token != hash){
+            //     res.status(400).json({"msg":"token incorrect","can_access":false})
+            //     return
+            // }
 
             conn.query('UPDATE user_data SET user_last_login = ? WHERE user_mac = ?',[time,mac],(err,result,field)=>{
                 if(err){
@@ -34,7 +35,7 @@ route.post('/',(req,res)=>{
                 }
             })
 
-            conn.query('UPDATE rent_data SET rent_status = 0 WHERE (user_mac = ? && rent_status = ?) && (DATE(NOW()) NOT BETWEEN rent_start AND rent_end)',[mac,1],(err,result,field)=>{
+            conn.query('UPDATE rent_data SET rent_status = 0 WHERE (user_mac = ? && rent_status = ?) && (? NOT BETWEEN rent_start AND rent_end)',[mac,1,now],(err,result,field)=>{
                 if(err){
                     res.status(400).json({"msg":"Update Failed : "+ err,"status":"false"})
                     return
